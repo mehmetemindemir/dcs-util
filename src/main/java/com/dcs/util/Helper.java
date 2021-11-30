@@ -1550,34 +1550,6 @@ public class Helper {
 
 
 
-    public static String decrypt(String encrypted) {
-
-        byte[] decryptedBytes = null;
-        try {
-            ivParameterSpec = new IvParameterSpec(SECRET_KEY_1.getBytes("UTF-8"));
-            secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes("UTF-8"), "AES");
-            cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-            decryptedBytes = cipher.doFinal(Base64.decodeBase64(encrypted.getBytes(StandardCharsets.UTF_8)));
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        }
-        return new String(decryptedBytes);
-    }
-
     public static String checkTcketNumber(String ticketNum) {
         String retval = "NOK";
         try {
@@ -1604,5 +1576,64 @@ public class Helper {
 
         }
         return retval;
+    }
+    public static String encrypt(String toBeEncrypt) {
+        byte[] encrypted = null;
+        String retval="";
+        try {
+            if(toBeEncrypt.trim().length()>0){
+                ivParameterSpec = new IvParameterSpec(SECRET_KEY_1.getBytes("UTF-8"));
+                secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes("UTF-8"), "AES");
+                cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+                cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+                encrypted = cipher.doFinal(toBeEncrypt.getBytes());
+                retval=Base64.encodeBase64String(encrypted);
+            }
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        }
+        return  retval;
+
+
+    }
+
+    public static String decrypt(String encrypted) {
+
+        byte[] decryptedBytes = null;
+        try {
+            ivParameterSpec = new IvParameterSpec(SECRET_KEY_1.getBytes("UTF-8"));
+            secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes("UTF-8"), "AES");
+            cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+            decryptedBytes = cipher.doFinal(Base64.decodeBase64(encrypted));
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        }
+        return new String(decryptedBytes);
     }
 }
